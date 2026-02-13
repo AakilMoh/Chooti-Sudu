@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Update: Ilma</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- CSS STYLES --- */
+        body {
+            background-color: black;
+            color: #00ff41; /* Hacker Green */
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Prevents scrollbars */
+        }
+
+        #terminal-container {
+            width: 90%;
+            max-width: 700px;
+            z-index: 10;
+            position: relative;
+        }
+
+        #typing-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background-color: #00ff41;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        #options-box {
+            display: none;
+            margin-top: 30px;
+            position: relative;
+            height: 300px; /* Bigger area for buttons */
+        }
+
+        button {
+            padding: 15px 30px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border: 2px solid;
+            text-transform: uppercase;
+            z-index: 20;
+        }
+
+        /* YES Button */
+        #btn-yes {
+            background-color: #00ff41;
+            color: black;
+            border-color: #00ff41;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+            position: absolute;
+            left: 20%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        #btn-yes:hover {
+            background-color: #00cc33;
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.8);
+        }
+
+        /* NO Button - THE FIX: No Transition (Instant Teleport) */
+        #btn-no {
+            background-color: transparent;
+            color: red;
+            border-color: red;
+            position: absolute;
+            left: 60%;
+            top: 50%;
+            transform: translateY(-50%);
+            /* REMOVED TRANSITION HERE -> Makes it instant */
+        }
+
+        /* Success Message */
+        #success-msg {
+            display: none;
+            text-align: center;
+            z-index: 30;
+        }
+        
+        #success-msg h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="terminal-container">
+        <div id="typing-text"></div><span class="cursor"></span>
+
+        <div id="options-box">
+            <button id="btn-yes" onclick="handleYesClick()">YES</button>
+            <button id="btn-no" onmouseover="moveButton()" ontouchstart="moveButton()">NO</button>
+        </div>
+    </div>
+
+    <div id="success-msg">
+        <h1>ACCESS GRANTED! 🌹</h1>
+        <p style="color: white; font-size: 1.5rem;">System Update: You are officially my Valentine.</p>
+        <p style="color: gray; font-size: 0.8rem; margin-top: 20px;">(Transaction ID: AKEEL_LOVES_ILMA_FOREVER)</p>
+    </div>
+
+    <script>
+        // --- TEXT SCRIPT ---
+        const textToType = `> Connecting to server: SRI_LANKA... [CONNECTED]
+> User: Akeel
+> Target: Ilma Ihjas හෙවත් Choootiiii Suuuuduuuu
+>
+> WARNING: Critical "Missing You" levels detected.
+> Calculated Solution: BE_MY_VALENTINE.exe
+>
+> Executing request...
+>
+> Will you be my Valentine  Choootiiiii Suuuuduuuuuuu?`;
+
+        const typingSpeed = 50;
+        let i = 0;
+        
+        function typeWriter() {
+            if (i < textToType.length) {
+                document.getElementById("typing-text").innerHTML += textToType.charAt(i);
+                i++;
+                setTimeout(typeWriter, typingSpeed);
+            } else {
+                document.getElementById("options-box").style.display = "block";
+                document.querySelector(".cursor").style.display = "none";
+            }
+        }
+        window.onload = typeWriter;
+
+        // --- THE "NO" BUTTON (TELEPORT MODE) ---
+        function moveButton() {
+            const btnNo = document.getElementById("btn-no");
+            const container = document.getElementById("options-box");
+            
+            // Get boundaries
+            const containerRect = container.getBoundingClientRect();
+            const btnRect = btnNo.getBoundingClientRect();
+
+            // Calculate max area
+            const maxX = containerRect.width - btnRect.width;
+            const maxY = containerRect.height - btnRect.height;
+
+            // Random Position
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+
+            // Apply instantly
+            btnNo.style.left = randomX + "px";
+            btnNo.style.top = randomY + "px";
+        }
+
+        // --- THE ROSE RAIN (EMOJI METHOD) ---
+        // This creates a "Rose" shape from an emoji so it works everywhere
+        function handleYesClick() {
+            document.getElementById("terminal-container").style.display = "none";
+            document.getElementById("success-msg").style.display = "block";
+
+            // Create the Rose Emoji Shape
+            var scalar = 2;
+            var rose = confetti.shapeFromText({ text: '🌹', scalar });
+
+            var duration = 5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var skew = 1;
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            (function frame() {
+                var timeLeft = animationEnd - Date.now();
+                var ticks = Math.max(200, 500 * (timeLeft / duration));
+                skew = Math.max(0.8, skew - 0.001);
+
+                confetti({
+                    particleCount: 3,
+                    startVelocity: 0,
+                    ticks: ticks,
+                    origin: {
+                        x: Math.random(),
+                        y: (Math.random() * skew) - 0.2
+                    },
+                    shapes: [rose], // Use the emoji shape
+                    scalar: randomInRange(1.5, 2.5), // Make them big
+                    gravity: randomInRange(0.4, 0.8),
+                    drift: randomInRange(-0.4, 0.4)
+                });
+
+                if (timeLeft > 0) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+    </script>
+</body>
+</html>
